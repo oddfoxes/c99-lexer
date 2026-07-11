@@ -1,2 +1,4 @@
 # c99-lexer
-lexer for C99 standard
+i got the late night idea to make a C compiler at 1 and now it's 4 so i'm going to bed and finishing with only a lexer. 
+
+it will probably die on preprocessor stuff i didn't do allat
