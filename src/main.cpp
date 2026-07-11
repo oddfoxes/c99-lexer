@@ -28,24 +28,39 @@ std::string read_file(std::string p)
 
 int main(int argc, char *argv[])
 {
-    if (argc < 2)
-    {
-        std::cout << "Error: No input file provided. (usage: main.cpp <input_file>)\n";
-        return 1;
+    std::vector<Token> tokens;
+
+    // has input file in arguments
+    if (argc > 1) {
+        if (file_exists(argv[1]) == false) {
+            std::cout << "Error: Input filepath doesn't exist. (usage: main.cpp <input_file>)\n";
+            
+            return 1;
+        }
+
+        std::string source = read_file(argv[1]);
+        tokens = tokenize(source);
+    }
+    else {
+        std::cout << "No input file argument given. Enter input file:\n";
+        bool exists = false;
+        std::string p;
+
+        while (exists == false) {
+            getline(std::cin, p);
+
+            if (file_exists(p)) {
+                exists = true;
+            } else {
+                std::cout << "Error: Entered filepath doesn't exist.\n";
+            }
+
+            std::string source = read_file(p);
+            tokens = tokenize(source);
+        }
     }
 
-    if (file_exists(argv[1]) == false)
-    {
-        std::cout << "Error: Input filepath doesn't exist. (usage: main.cpp <input_file>)\n";
-        return 1;
-    }
-
-    std::string source = read_file(argv[1]);
-
-    std::vector<Token> tokens = tokenize(source);
-
-    for (Token t : tokens)
-    {
+    for (Token t : tokens) {
         std::string tt = "";
 
         switch (t.t)
