@@ -1,0 +1,9 @@
+cmake_minimum_required(VERSION 3.12..4.0.2)
+project("c" CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+file(GLOB C_SOURCE_FILES src/*.cpp src/*.hpp)
+
+add_executable(${PROJECT_NAME} ${C_SOURCE_FILES})
