@@ -1,33 +1,21 @@
 #include <iostream>
 #include <vector>
 
-enum TokenType
+enum class TokenType
 {
-    TT_KEYWORD,
-    TT_IDENT,
-    TT_CONST,
-    TT_STRLIT,
-    TT_PUNC,
-};
-
-// Pre-processor token types
-enum class PP_TokenType
-{
-    HeaderName,
+    Keyword,
     Identifier,
-    PPNumber,
-    CharConst,
-    StringLit,
+    Constant,
+    StringLiteral,
     Punctuator,
-    Unknown,
 };
 
-enum LexerState
+enum class LexerState
 {
-    LS_NONE, // Nothing
-    LS_BLOCK_COMM, // Comment block
-    LS_LINE_COMM, // Line comment
-    LS_STRING, // String
+    None, // Nothing
+    BlockComment, // Comment block
+    LineComment, // Line comment
+    String, // String
 };
 
 struct Token
