@@ -20,7 +20,7 @@ std::vector<Token> tokenize(std::string s)
         ' ', '\t', '\n'
     };
 
-    LexerState state = LS_NONE;
+    LexerState state = LexerState::None;
     std::vector<Token> tokens;
     std::string buff = "";
     int i = 0;
@@ -29,38 +29,38 @@ std::vector<Token> tokenize(std::string s)
     while (i < s.size())
     {
         // starts comments
-        if (state == LS_NONE && s[i] == '/' && i+1<s.size())
+        if (state == LexerState::None && s[i] == '/' && i+1<s.size())
         {
             if (s[i+1] == '/')
             {
-                state = LS_LINE_COMM;
+                state = LexerState::LineComment;
                 i += 2;
                 continue;
             }
             else if (s[i+1] == '*')
             {
-                state = LS_BLOCK_COMM;
+                state = LexerState::BlockComment;
                 i += 2;
                 continue;
             }
         }
 
         // line comments
-        if (state == LS_LINE_COMM)
+        if (state == LexerState::LineComment)
         {
             if (s[i] == '\n')
-                state = LS_NONE;
+                state = LexerState::None;
 
             i++;
             continue;
         }
 
         // block comments
-        if (state == LS_BLOCK_COMM)
+        if (state == LexerState::BlockComment)
         {
             if (s[i] == '*' && i+1<s.size() && s[i+1] == '/')
             {
-                state = LS_NONE;
+                state = LexerState::None;
                 i += 2;
             } else {
                 i++;
@@ -70,13 +70,13 @@ std::vector<Token> tokenize(std::string s)
         }
 
         // string buffers and ends
-        if (state == LS_STRING)
+        if (state == LexerState::String)
         {
             if (s[i] == '\"' && s[i-1] != '\\')
             {
-                state = LS_NONE;
+                state = LexerState::None;
                 tokens.push_back(Token{
-                    t: TT_STRLIT,
+                    t: TokenType::StringLiteral,
                     l: buff,
                     i: i0,
                 });
@@ -89,7 +89,7 @@ std::vector<Token> tokenize(std::string s)
             continue;
         }
 
-        if (state == LS_NONE)
+        if (state == LexerState::None)
         {
             // skip whitespace
             if (WHITESPACE.count(s[i]))
@@ -102,7 +102,7 @@ std::vector<Token> tokenize(std::string s)
             if (s[i] == '\"')
             {
                 i0 = i;
-                state = LS_STRING;
+                state = LexerState::String;
                 i++;
 
                 continue;
@@ -122,7 +122,7 @@ std::vector<Token> tokenize(std::string s)
                 }
 
                 tokens.push_back(Token{
-                    t: TT_CONST,
+                    t: TokenType::Constant,
                     l: "" + s[i-1],
                     i: i0,
                 });
@@ -150,7 +150,7 @@ std::vector<Token> tokenize(std::string s)
                 }
 
                 tokens.push_back(Token{
-                    t : TT_CONST,
+                    t : TokenType::Constant,
                     l : buff,
                     i : i0,
                 });
@@ -183,7 +183,7 @@ std::vector<Token> tokenize(std::string s)
                 if (KEYWORDS.count(buff))
                 {
                     tokens.push_back(Token{
-                        t : TT_KEYWORD,
+                        t : TokenType::Keyword,
                         l : buff,
                         i : i0,
                     });
@@ -192,7 +192,7 @@ std::vector<Token> tokenize(std::string s)
                 else
                 {
                     tokens.push_back(Token{
-                        t : TT_IDENT,
+                        t : TokenType::Identifier,
                         l : buff,
                         i : i0,
                     });
@@ -212,7 +212,7 @@ std::vector<Token> tokenize(std::string s)
             if (i + p.size() <= s.size() && s.compare(i, p.size(), p) == 0)
             {
                 tokens.push_back(Token{
-                    t : TT_PUNC,
+                    t : TokenType::Punctuator,
                     l : p,
                     i : i,
                 });
