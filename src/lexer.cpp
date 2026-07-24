@@ -10,6 +10,7 @@ std::vector<Token> tokenize(std::string s)
         "restrict", "return", "short", "signed", "sizeof", "static", "struct", "switch", "typedef", "union",
         "unsigned", "void", "volatile", "while", "_Bool", "_Complex", "_Imaginary",
     };
+    // not unordered_set because it needs to be ordered longest to shortest
     static const std::vector<std::string> PUNCTUATORS = {
         "%:%:", "...", "<<=", ">>=", "->", "++", "--", "<<", ">>", "<=", ">=", "==", 
         "!=", "&&", "||", "*=", "/=", "%=", "+=", "-=", "&=", "^=", "|=", "<:", ":>", 
